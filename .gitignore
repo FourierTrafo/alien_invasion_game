@@ -1,0 +1,7 @@
+# Ignore instance cache
+__pycache__
+
+# ignore svg files
+*.svg
+
+
