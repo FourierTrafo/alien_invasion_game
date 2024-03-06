@@ -11,4 +11,4 @@ class Settings:
         self.frame_rate = 60
 
         # Ship settings
-        self.ship_speed = 1.5
+        self.ship_speed = 10
