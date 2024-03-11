@@ -35,9 +35,11 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
-            self.bullets.update()
+            self._update_bullets()
             self._update_screen()
             self.clock.tick(60)
+            
+        
 
 
     def _check_events(self) -> None:
@@ -85,15 +87,9 @@ class AlienInvasion:
 
         elif event.key == pygame.K_q:
             sys.exit()
+  
 
-
-    def _fire_bullet(self):
-        """Create a new bullet and add it to the bullets group
-        """ 
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)       
-
-    def _check_keyup_events(self, event):
+    def _check_keyup_events(self, event) -> None:
         """
         Respon do key releases
 
@@ -103,7 +99,26 @@ class AlienInvasion:
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
-            self.ship.moving_left = False   
+            self.ship.moving_left = False 
+
+    
+    def _fire_bullet(self) -> None:
+        """Create a new bullet and add it to the bullets group
+        """ 
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet) 
+
+    def _update_bullets(self) -> None:
+        """Update position of bullets and get rid of old bullets
+        """              
+        self.bullets.update()
+
+        # delete off-screen bullets
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom < 0:
+                self.bullets.remove(bullet)
+       
 
 
 if __name__ == '__main__':
