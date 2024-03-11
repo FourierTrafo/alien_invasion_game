@@ -12,10 +12,16 @@ class Settings:
 
         # Ship settings
         self.ship_speed = 10
+        self.ship_scale_width = 40
+        self.ship_scale_height = 80
 
         # Bullet settings 
         self.bullet_speed = 2
         self.bullet_width = 3
         self.bullet_height = 15
-        self.bullet_color = (60, 60, 60)
+        self.bullet_color = (250, 250, 250)
         self.bullets_allowed = 3
+
+        #alien settings
+        self.alien_scale_width = 60
+        self.alien_scale_height = 40
