@@ -9,6 +9,7 @@ from game_stats import GameStats
 from ship import Ship
 from alien import Alien
 from star import Star
+from button import Button
 
 
 class AlienInvasion:
@@ -38,7 +39,10 @@ class AlienInvasion:
 
         self._create_fleet()
         self._create_starry_sky()
-        self.game_active = True
+        self.game_active = False
+
+        # Make the Play button.
+        self.play_button = Button(self, 'Play')
        
         
     def run_game(self) -> None:
@@ -47,7 +51,7 @@ class AlienInvasion:
         """
         while True:
             self._check_events()
-            
+
             if self.game_active:
                 self.ship.update()
                 self._update_bullets()
@@ -68,6 +72,19 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+
+
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the player clicks Play
+
+        Args:
+            mouse_pos (tupel): mouse position when clicking the screen
+        """        
+        if self.play_button.rect.collidepoint(mouse_pos):
+            self.game_active = True
 
 
     def _update_screen(self) -> None:
@@ -87,6 +104,10 @@ class AlienInvasion:
         
         self.ship.blitme()
         self.aliens.draw(self.screen)
+
+        # Draw the play button if the game is inactive
+        if not self.game_active:
+            self.play_button.draw_button()
         
         pygame.display.flip()
 
