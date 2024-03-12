@@ -23,11 +23,8 @@ class Ship:
         self.moving_right = False
         self.moving_left = False
 
-        # Start each new ship at the bottom center of the screen 
-        self.rect.midbottom = self.screen_rect.midbottom
-
-        # Store the ships exact horizontal position as a float 
-        self.x = float(self.rect.x)
+        self.center_ship()
+        
 
     def blitme(self) -> None:
         """
@@ -47,3 +44,12 @@ class Ship:
             
         # Update the rect position by self.x    
         self.rect.x = self.x
+
+    def center_ship(self):
+        """Center the ship on the screen
+        """
+        # Start each new ship at the bottom center of the screen 
+        self.rect.midbottom = self.screen_rect.midbottom
+
+        # Store the ships exact horizontal position as a float 
+        self.x  = float(self.rect.x)        
