@@ -22,6 +22,11 @@ class Settings:
         self.bullet_color = (250, 250, 250)
         self.bullets_allowed = 3
 
-        #alien settings
+        #Aien settings
         self.alien_scale_width = 60
         self.alien_scale_height = 40
+
+        #Star settings
+        self.star_scale_width = 10
+        self.star_scale_height = 10
+        
