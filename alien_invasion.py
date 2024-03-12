@@ -64,14 +64,21 @@ class AlienInvasion:
     def _update_screen(self) -> None:
         """
         Update images on the screen, and flip to the new screen
-        """            
+        """          
+        #create background
         self.screen.fill(self.settings.bg_color)
+        
+        #fill background with stars
+        self.stars.draw(self.screen)  
+
+        #draw shot bullets
         for bullet in self.bullets:
             bullet.draw_bullet()
         
+        
         self.ship.blitme()
         self.aliens.draw(self.screen)
-        self.stars.draw(self.screen)
+        
 
         pygame.display.flip()
 
@@ -153,9 +160,47 @@ class AlienInvasion:
         self.aliens.add(new_alien)
 
     def _create_starry_sky(self):
-        """Creates rondomly placed stars
+        """Creates rondomly placed stars in the background
+        """
+        star_count = 0
+
+        while star_count < self.settings.stars_allowed:
+            
+            # Set random position
+            x_position = randint(0, self.screen.get_width())
+            y_position = randint(0, self.screen.get_width())
+
+            # Set scaling, width and height should be equal
+            width = randint(1, self.settings.star_scale_width)
+            height = width
+
+            # Rotate by random angle
+            rotation_angle  = randint(0, 45)
+            
+            
+            self._create_star(x_position, y_position, width, height,
+                              rotation_angle) 
+            
+            star_count += 1
+
+
+
+    def _create_star(self, x_position, y_position, width,
+                      height, rotation_angle):
+        """Create a star at the given position in the backgrond
+
+        Args:
+            x_position (int): x-Position on the screen of the star
+            y_position (int): y-Position on the screen of the star
+            width (int): Scale the star to given width
+            height (int): Scale the star to given height
+            rotation_angle (int): rotate the star around its axis by given angle
         """
         new_star = Star(self)
+        new_star.rect.x = x_position
+        new_star.rect.y = y_position
+        new_star.scale(width, height)
+        new_star.rotate(rotation_angle)
         self.stars.add(new_star)
 
        
