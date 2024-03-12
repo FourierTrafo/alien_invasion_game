@@ -40,9 +40,11 @@ class AlienInvasion:
         self._create_fleet()
         self._create_starry_sky()
         self.game_active = False
+        self.game_paused = False
 
         # Make the Play button.
         self.play_button = Button(self, 'Play')
+        self.pause_button = Button(self, 'Pause')
        
         
     def run_game(self) -> None:
@@ -52,7 +54,7 @@ class AlienInvasion:
         while True:
             self._check_events()
 
-            if self.game_active:
+            if self.game_active and not self.game_paused:
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
@@ -107,9 +109,14 @@ class AlienInvasion:
         self.ship.blitme()
         self.aliens.draw(self.screen)
 
+        # Draw Pause Button when paused
+        if self.game_paused:
+            self.pause_button.draw_button()
+
         # Draw the play button if the game is inactive
         if not self.game_active:
             self.play_button.draw_button()
+
         
         pygame.display.flip()
 
@@ -129,6 +136,12 @@ class AlienInvasion:
 
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
+
+        elif event.key == pygame.K_r:
+            self._start_game()
+
+        elif event.key == pygame.K_p:
+            self._pause_game()
 
         elif event.key == pygame.K_q:
             sys.exit()
@@ -324,9 +337,19 @@ class AlienInvasion:
         """            
         self.stats.reset_stats()
         self.game_active = True
+        self.game_paused = False
         self._reset_game()
         # Hide the mouse cursor
-        pygame.mouse.set_visible(False) 
+        pygame.mouse.set_visible(False)
+
+    def _pause_game(self):
+        """Pause the game on demand when game is active
+        """         
+        if self.game_active:
+            if self.game_paused:
+                self.game_paused = False
+            else:     
+                self.game_paused = True
 
        
 if __name__ == '__main__':
