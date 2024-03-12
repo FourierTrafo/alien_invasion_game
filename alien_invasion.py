@@ -1,10 +1,12 @@
 import sys
 import pygame
 from bullet import Bullet
+from random import randint
 
 from settings import Settings
 from ship import Ship
 from alien import Alien
+from star import Star
 
 
 class AlienInvasion:
@@ -27,8 +29,10 @@ class AlienInvasion:
         self.ship = Ship(self) 
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
+        self.stars = pygame.sprite.Group()
 
         self._create_fleet()
+        self._create_starry_sky()
        
         
 
@@ -67,6 +71,7 @@ class AlienInvasion:
         
         self.ship.blitme()
         self.aliens.draw(self.screen)
+        self.stars.draw(self.screen)
 
         pygame.display.flip()
 
@@ -146,7 +151,15 @@ class AlienInvasion:
         new_alien.rect.x = x_position 
         new_alien.rect.y = y_position
         self.aliens.add(new_alien)
+
+    def _create_starry_sky(self):
+        """Creates rondomly placed stars
+        """
+        new_star = Star(self)
+        self.stars.add(new_star)
+
        
+
 if __name__ == '__main__':
     #Make a game instance and run the game
     ai = AlienInvasion()
