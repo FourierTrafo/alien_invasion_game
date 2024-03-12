@@ -29,4 +29,6 @@ class Settings:
         #Star settings
         self.star_scale_width = 10
         self.star_scale_height = 10
+        self.star_rotation = 0
+        self.stars_allowed = 50
         
