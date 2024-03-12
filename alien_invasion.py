@@ -88,8 +88,7 @@ class AlienInvasion:
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         
         if button_clicked and not self.game_active:
-            self._start_game()
-
+            self._start_new_game()
 
     def _update_screen(self) -> None:
         """
@@ -138,7 +137,7 @@ class AlienInvasion:
             self._fire_bullet()
 
         elif event.key == pygame.K_r:
-            self._start_game()
+            self._start_new_game()
 
         elif event.key == pygame.K_p:
             self._pause_game()
@@ -180,17 +179,18 @@ class AlienInvasion:
         
         self._check_bullet_alien_collisions()
         
-        if not self.aliens:
-            # Destroy existing bullets and create a new fleet.
-            self.bullets.empty()
-            self._create_fleet()
-
-
+ 
     def _check_bullet_alien_collisions(self):
         """Resond to bullet-alien collisions
         """
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, not self.settings.bullets_piercing, True)
+
+        if not self.aliens:
+            # Destroy existing bullets and create a new fleet.
+            self.bullets.empty()
+            self._create_fleet()
+            self.settings.increase_speed()
 
  
     def _create_fleet(self):
@@ -242,7 +242,7 @@ class AlienInvasion:
             # Decrement ships left
             self.stats.ships_left -= 1
 
-            self._reset_game()
+            self._reset_level()
 
             # Pause
             sleep(0.5)
@@ -321,7 +321,8 @@ class AlienInvasion:
         new_star.rotate(rotation_angle)
         self.stars.add(new_star)
 
-    def _reset_game(self):
+
+    def _reset_level(self):
         """Resets the game to the initial state for a new round
         """        
         # Get rid of remaining bullets and aliens.
@@ -332,13 +333,15 @@ class AlienInvasion:
         self._create_fleet()
         self.ship.center_ship()
 
-    def _start_game(self):
+
+    def _start_new_game(self):
         """Starts a new game
         """            
         self.stats.reset_stats()
         self.game_active = True
         self.game_paused = False
-        self._reset_game()
+        self._reset_level()
+        self.settings.initialize_dynamic_settings()
         # Hide the mouse cursor
         pygame.mouse.set_visible(False)
 
@@ -350,8 +353,8 @@ class AlienInvasion:
                 self.game_paused = False
             else:     
                 self.game_paused = True
-
-       
+                
+     
 if __name__ == '__main__':
     #Make a game instance and run the game
     ai = AlienInvasion()
