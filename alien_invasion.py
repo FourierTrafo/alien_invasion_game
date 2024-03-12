@@ -82,9 +82,13 @@ class AlienInvasion:
 
         Args:
             mouse_pos (tupel): mouse position when clicking the screen
-        """        
-        if self.play_button.rect.collidepoint(mouse_pos):
+        """      
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        
+        if button_clicked and not self.game_active:
+            self.stats.reset_stats()
             self.game_active = True
+            self._reset_game()
 
 
     def _update_screen(self) -> None:
@@ -227,13 +231,7 @@ class AlienInvasion:
             # Decrement ships left
             self.stats.ships_left -= 1
 
-            # Get rid of any remaining bullets and aliens.
-            self.bullets.empty()
-            self.aliens.empty()
-
-            # Create a new fleet and center the ship.
-            self._create_fleet()
-            self.ship.center_ship()
+            self._reset_game()
 
             # Pause
             sleep(0.5)
@@ -310,6 +308,17 @@ class AlienInvasion:
         new_star.scale(width, height)
         new_star.rotate(rotation_angle)
         self.stars.add(new_star)
+
+    def _reset_game(self):
+        """Resets the game to the initial state for a new round
+        """        
+        # Get rid of remaining bullets and aliens.
+        self.bullets.empty()
+        self.aliens.empty()
+
+        # Create a new fleet and center the ship
+        self._create_fleet()
+        self.ship.center_ship()
 
        
 
