@@ -256,7 +256,8 @@ class AlienInvasion:
             self.stats.ships_left -= 1
 
             self._reset_level()
-
+            self.sb.prep_ships()
+            
             # Pause
             sleep(0.5)
         else:
@@ -353,6 +354,7 @@ class AlienInvasion:
         self.stats.reset_stats()
         self.sb.prep_score()
         self.sb.prep_level()
+        self.sb.prep_ships()
         self.game_active = True
         self.game_paused = False
         self._reset_level()
