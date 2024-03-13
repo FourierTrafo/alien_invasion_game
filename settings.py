@@ -11,13 +11,17 @@ class Settings:
         self.bg_color = (0, 13, 33)
         self.frame_rate = 60
 
+        
         # Static Ship settings
-        self.ship_scale_width = 40
-        self.ship_scale_height = 80
+        self.ship_png_width = 80.742
+        self.ship_png_height = 83.479
+        self.ship_scale_factor = 1
+        self.ship_scale_width = self.ship_scale_factor* self.ship_png_width
+        self.ship_scale_height = self.ship_scale_factor * self.ship_png_height
         self.ship_limit = 2
 
         # Static Bullet settings 
-        self.bullet_width = 300
+        self.bullet_width = 3
         self.bullet_height = 15
         
         #Alien settings
