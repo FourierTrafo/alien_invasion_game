@@ -3,6 +3,7 @@ import pygame
 from bullet import Bullet
 from random import randint
 from time import sleep
+import json
 
 from settings import Settings
 from game_stats import GameStats
@@ -71,7 +72,7 @@ class AlienInvasion:
         """ 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit()    
+                self._quit_game()  
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
@@ -146,7 +147,8 @@ class AlienInvasion:
             self._pause_game()
 
         elif event.key == pygame.K_q:
-            sys.exit()
+            self._quit_game()
+            
   
 
     def _check_keyup_events(self, event) -> None:
@@ -353,8 +355,6 @@ class AlienInvasion:
         self.sb.prep_level()       
 
 
-
-
     def _start_new_game(self):
         """Starts a new game
         """            
@@ -377,6 +377,15 @@ class AlienInvasion:
                 self.game_paused = False
             else:     
                 self.game_paused = True
+
+    def _quit_game(self):
+        """Saves important data before quitting the game
+        """
+        with open("high_score.json", "w") as json_datei:
+            json.dump(self.stats.high_score, json_datei)
+        
+        sys.exit()
+
                 
      
 if __name__ == '__main__':
