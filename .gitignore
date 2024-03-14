@@ -7,3 +7,6 @@ __pycache__
 # Ignore the pdf file from alien 
 alien.pdf
 
+# jpgs
+*.jpg
+
