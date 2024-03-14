@@ -4,6 +4,7 @@ from bullet import Bullet
 from random import randint
 from time import sleep
 import json
+import os
 
 from settings import Settings
 from game_stats import GameStats
@@ -12,6 +13,7 @@ from alien import Alien
 from star import Star
 from button import Button
 from scoreboard import ScoreBoard
+from message import Message
 
 
 class AlienInvasion:
@@ -51,8 +53,11 @@ class AlienInvasion:
         # Make the Play button.
         self.play_button = Button(self, 'Play')
         self.pause_button = Button(self, 'Pause')
-       
         
+        # Prepare Messages
+        self._load_msg('bday_msg.json')
+        
+
     def run_game(self) -> None:
         """
         Start the main loop for the game
@@ -96,6 +101,7 @@ class AlienInvasion:
         if button_clicked and not self.game_active:
             self._start_new_game()
 
+
     def _update_screen(self) -> None:
         """
         Update images on the screen, and flip to the new screen
@@ -117,7 +123,8 @@ class AlienInvasion:
 
         # Draw Pause Button when paused
         if self.game_paused:
-            self.pause_button.draw_button()
+            self.message.draw_msg()
+            # self.pause_button.draw_button()
 
         # Draw the play button if the game is inactive
         if not self.game_active:
@@ -152,7 +159,6 @@ class AlienInvasion:
         elif event.key == pygame.K_q:
             self._quit_game()
             
-  
 
     def _check_keyup_events(self, event) -> None:
         """
@@ -388,6 +394,20 @@ class AlienInvasion:
             json.dump(self.stats.high_score, json_datei)
         
         sys.exit()
+
+    def _load_msg(self, msg_path):
+        """Load and render long message from json file at given path
+
+        Args:
+            msg_path (str): Path to the message, which schould be loaded
+        """        
+        # Load the Message from json file
+        if os.path.exists(msg_path):
+            with open(msg_path, "r") as json_datei:
+                msg = json.load(json_datei)
+            
+            self.message = Message(self, msg)
+        
 
                 
      
